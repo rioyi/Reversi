@@ -1,5 +1,4 @@
 #Reversi
-
 def nombres(player)
 	for i in 0..1
 		puts "Ingrese el nombre del Jugador #{i + 1}"
@@ -57,6 +56,45 @@ def contador(m,puntos)
 	return puntos
 end
 
+def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
+	imprimir(matriz)
+	puts
+	contador(matriz,puntos)
+	puts "#{jugador_1} | Puntos --> #{puntos[0]}"
+	puts "#{jugador_2} | Puntos --> #{puntos[1]}"
+	puts "Numero de turnos = #{turnos}"
+	puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
+end
+
+def jugadas_validas(jugador)
+	
+end
+
+def mover_ficha(validas)
+	flag = false
+
+	loop do
+
+	puts "Ingrese la fila"
+	fila = gets.chomp.to_i
+	puts "Ingrese la columna"
+	columna = gets.chomp.to_i
+	if columna < fila
+		flag = true
+	else
+		puts "JUGADA NO VALIDA"
+		puts
+	end
+	break if flag == true
+	end
+
+
+end
+
+def cambiar_fichas
+	
+end
+
 
 def main()
 	matriz = []
@@ -72,29 +110,25 @@ def main()
 		system("clear")
 		validas = []
 		coordenadas = []
-		imprimir(matriz)
-		puts
-		contador(matriz,puntos)
-		puts "#{jugador_1} | Puntos --> #{puntos[0]}"
-		puts "#{jugador_2} | Puntos --> #{puntos[1]}"
-		validas = jugadas_validas
-		coordenadas = mover_ficha
-		if validas != []
-			if coordenadas == jugadasvalidas
-				cambiar fichas flanqueadas
-			else
-				ralizar una jugada valida
-			end
-		elsif jugas validas proximo == nil  
-			fin del juego
-		end
+		pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
+		jugador_actual = turnos % 2 == 0 ? "|x|" : "|0|"
+		validas = jugadas_validas(jugador_actual)
+		#if validas != []			
+			mover_ficha(validas)
 
+			#if coordenadas == jugadasvalidas
+				#cambiar_fichas
+			#else
+				#ralizar una _jugada_valida
+			#end
+		#elsif jugas_validas_proximo == []  
+			#puts "fin del juego"
+		#end
 
-		puts "Numero de turnos = #{turnos}"
-		puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
+		
 		turnos += 1
 		  
-		gets
+		
 
 	end
 end
