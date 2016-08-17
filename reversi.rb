@@ -32,11 +32,13 @@ def tablero(m)
 	m[5][6] = "|O|"
 	m[4][6] = "|O|"
 	m[6][4] = "|O|"
+	m[1][5] = "|O|"
+	m[2][4] = "|X|"
 
 
 	
 end
-
+#Imprime la matriz
 def imprimir(m)
 	puts "======== REVERSI ========"
 	puts ""
@@ -51,6 +53,7 @@ def imprimir(m)
 	return m
 end
 
+#Lleva el conteo de las fichas
 def contador(m,puntos)
 	sum_X = 0
 	sum_0 = 0
@@ -69,6 +72,7 @@ def contador(m,puntos)
 	return puntos
 end
 
+#Miscelaneo de impresion de pantalla
 def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
 	imprimir(matriz)
 	puts
@@ -79,7 +83,7 @@ def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
 	puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
 end
 
-#READY
+#Revisión de hacia abajo
 def validacion_abajo(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -100,7 +104,7 @@ def validacion_abajo(m)
 	return coor
 end
 
-#READY
+#Revisión de hacia arriba
 def validacion_arriba(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -122,7 +126,7 @@ def validacion_arriba(m)
 	return coor
 end
 
-#READY
+#Revisión de hacia derecha
 def validacion_derecha(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -143,7 +147,7 @@ def validacion_derecha(m)
 	return coor
 end
 
-#READY
+#Revisión de hacia izquierda
 def validacion_izquierda(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -164,7 +168,7 @@ def validacion_izquierda(m)
 	return coor
 end
 
-#READY
+#Revisión de derecha abajo (Diagonal)	
 def validacion_derecha_abajo(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -186,7 +190,7 @@ def validacion_derecha_abajo(m)
 	return coor
 end
 
-#READY
+#Revisión de derecha arriba (Diagonal)
 def validacion_derecha_arriba(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -208,7 +212,7 @@ def validacion_derecha_arriba(m)
 	return coor
 end
 
-#READY
+#Revisión de izquierda abajo (Diagonal)
 def validacion_izquierda_abajo(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -230,7 +234,7 @@ def validacion_izquierda_abajo(m)
 	return coor
 end
 
-#READY
+#Revisión de izquierda arriba (Diagonal)
 def validacion_izquierda_arriba(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -291,7 +295,7 @@ def main()
 	turnos = 1
 	nombres(player)
 	jugador_1 = "Jugador 1 (X): #{player[0].capitalize}"
-	jugador_2 = "Jugador 2 (0): #{player[1].capitalize}"
+	jugador_2 = "Jugador 2 (O): #{player[1].capitalize}"
 	
 	loop do
 		system("clear")

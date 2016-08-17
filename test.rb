@@ -19,6 +19,10 @@ end
 def recorrido(m)
 	for i in 0..m.length - 1
 		for j in 0..m.length - 1
+
+			while condition
+				
+			end
 			puts m[i][j - 1] 
 
 			gets		
