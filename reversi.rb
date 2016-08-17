@@ -22,12 +22,18 @@ def tablero(m)
 	m[4][4] = "|O|"
 	m[4][5] = "|O|"
 	m[5][5] = "|X|"
+	m[5][2] = "|O|"
+	m[6][6] = "|O|"
+	m[3][2] = "|O|"
 	
 	m[1][0] = "|X|"
 	m[2][0] = "|O|"
 	m[3][0] = "|O|"
 	m[5][6] = "|O|"
 	m[4][6] = "|O|"
+	m[6][4] = "|O|"
+
+
 	
 end
 
@@ -202,19 +208,41 @@ def validacion_derecha_arriba(m)
 	return coor
 end
 
-#EDIT
-def validacion_derecha_arriba(m)
+#READY
+def validacion_izquierda_abajo(m)
 	coor = []
 	for i in 0..m.length - 1			
 		for j in 0..m.length - 1
 			a = [] 
 			if m[i][j] == "|X|"				
-				while m[i - 1][j + 1] == "|O|" 
-					j += 1
+				while m[i + 1][j - 1] == "|O|" 
+					j -= 1
+					i += 1
+					if m[i + 1][j - 1] == "| |" 
+						a << i + 1
+						a << j - 1
+						coor << a
+					end
+				end
+			end
+		end
+	end
+	return coor
+end
+
+#READY
+def validacion_izquierda_arriba(m)
+	coor = []
+	for i in 0..m.length - 1			
+		for j in 0..m.length - 1
+			a = [] 
+			if m[i][j] == "|X|"				
+				while m[i - 1][j - 1] == "|O|" 
+					j -= 1
 					i -= 1
-					if m[i - 1][j + 1] == "| |" 
+					if m[i - 1][j - 1] == "| |" 
 						a << i - 1
-						a << j + 1
+						a << j - 1
 						coor << a
 					end
 				end
@@ -293,7 +321,11 @@ def main()
 			dere_arriba = validacion_derecha_arriba(matriz)
 			puts "dere_arriba #{dere_arriba}"
 
+			izq_abajo = validacion_izquierda_abajo(matriz)
+			puts "izq_abajo #{izq_abajo}"
 
+			izq_arriba = validacion_izquierda_arriba(matriz)
+			puts "izq_arriba #{izq_arriba}"
 
 
 
