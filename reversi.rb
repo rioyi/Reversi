@@ -16,12 +16,17 @@ def tablero(m)
 		end
 		m << a
 	end
-	m[3][3] = "|0|"
-	m[3][4] = "|X|"
-	m[4][4] = "|0|"
+	m[3][3] = "|O|"
+	m[3][4] = "|X|"	
 	m[4][3] = "|X|"
-
-	return m
+	m[4][4] = "|O|"
+	m[4][5] = "|O|"
+	m[5][5] = "|X|"
+	
+	m[1][0] = "|X|"
+	m[2][0] = "|O|"
+	m[3][0] = "|O|"
+	
 end
 
 def imprimir(m)
@@ -43,7 +48,7 @@ def contador(m,puntos)
 	sum_0 = 0
 	for i in 0..m.length - 1
 		for j in 0..m.length - 1
-			if m[i][j] == "|0|"
+			if m[i][j] == "|O|"
 				sum_0 += 1
 			elsif m[i][j] == "|X|"
 				sum_X += 1
@@ -65,6 +70,95 @@ def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
 	puts "Numero de turnos = #{turnos}"
 	puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
 end
+
+#lito
+def validacion_abajo(m)
+	coor = []
+	for i in 0..m.length - 1			
+		for j in 0..m.length - 1
+			a = [] 
+			if m[j][i] == "|X|"				
+				while m[j + 1][i] == "|O|" 
+					j += 1
+					if m[j + 1][i] == "| |" 
+						a << j + 1 
+						a << i
+						coor << a
+					end
+				end
+			end
+		end
+	end
+	return coor
+end
+
+#listo
+def validacion_arriba(m)
+	coor = []
+	for i in 0..m.length - 1			
+		for j in 0..m.length - 1
+			a = []
+			if m[j][i] == "|X|"				
+				while m[j - 1][i] == "|O|" 
+					j -= 1
+					
+					if m[j - 1][i] == "| |"
+						a << j - 1 
+						a << i
+						coor << a
+					end
+				end
+			end
+		end
+	end
+	return coor
+end
+
+#listo
+def validacion_derecha(m)
+	coor = []
+	for i in 0..m.length - 1			
+		for j in 0..m.length - 1
+			a = [] 
+			if m[i][j] == "|X|"				
+				while m[i][j + 1] == "|O|" 
+					j += 1
+					if m[i][j + 1] == "| |" 
+						a << i 
+						a << j + 1
+						coor << a
+					end
+				end
+			end
+		end
+	end
+	return coor
+end
+
+
+def validacion_izquierda(m)
+	coor = []
+	for i in 0..m.length - 1			
+		for j in 0..m.length - 1
+			a = [] 
+			if m[i][j] == "|X|"				
+				while m[i][j - 1] == "|O|" 
+					j -= 1
+					if m[i][j - 1] == "| |" 
+						a << i 
+						a << j - 1
+						coor << a
+					end
+				end
+			end
+		end
+	end
+	return coor
+end
+
+
+
+
 
 def jugadas_validas(jugador)
 	
@@ -108,13 +202,27 @@ def main()
 	
 	loop do
 		system("clear")
-		validas = []
-		coordenadas = []
+		#validas = []
+		#coordenadas = []
 		pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
 		jugador_actual = turnos % 2 == 0 ? "|x|" : "|0|"
-		validas = jugadas_validas(jugador_actual)
-		#if validas != []			
-			mover_ficha(validas)
+		#validas = jugadas_validas(jugador_actual)
+		#if validas != []		
+			abajo = validacion_abajo(matriz)
+			puts "Bajo #{abajo}"
+			#arriba = validacion_arriba(matriz)
+			#puts "Arriba #{arriba}"
+			arriba = validacion_arriba(matriz)
+			puts "arriba #{arriba}"
+
+			derecha = validacion_derecha(matriz)
+			puts "Derecha #{derecha}"	
+			#mover_ficha(validas)
+
+			izquierda = validacion_izquierda(matriz)
+			puts "izquieda #{izquierda}"
+
+
 
 			#if coordenadas == jugadasvalidas
 				#cambiar_fichas
@@ -128,7 +236,7 @@ def main()
 		
 		turnos += 1
 		  
-		
+		gets
 
 	end
 end
