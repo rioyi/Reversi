@@ -1,3 +1,30 @@
+
+m = [[1,2],[3,2]]
+
+print m
+puts 
+
+puts "Ingrese una fila"
+fila = gets.chomp.to_i
+
+puts "Ingrese una columna"
+columna = gets.chomp.to_i
+
+a = [fila, columna]
+flag = false
+for i in 0..m.length - 1
+	if m[i] == a
+		puts "cool"
+		flag = true
+	else
+		puts "chimbo pues"
+	end
+	break if flag == true
+end
+
+
+=begin
+
 m = []
 
 for i in 0..5
@@ -38,7 +65,6 @@ puts
 recorrido(m)
 
 
-=begin
 m = [[0,0,0,0],[0,1,0,0],[0,0,0,0],[0,0,1,0]]
 coor = [] 
 

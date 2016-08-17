@@ -1,353 +1,369 @@
-#Reversi
+#+Reversi
 def nombres(player)
-	for i in 0..1
-		puts "Ingrese el nombre del Jugador #{i + 1}"
-		jugador = gets.chomp
-		player << jugador
-	end
-	return player
+  for i in 0..1
+    puts "Ingrese el nombre del Jugador #{i + 1}"
+    jugador = gets.chomp
+    player << jugador
+  end
+  return player
+end
+#+Construye el tablero
+def tablero(m)
+  for i in 0..7
+    a = []
+    for j in 0..7
+      a << "| |"
+    end
+    m << a
+  end
+  m[3][3] = "|O|"
+  m[3][4] = "|X|"
+  m[4][3] = "|X|"
+  m[4][4] = "|O|"
+  m[4][5] = "|O|"
+  m[5][5] = "|X|"
+  m[5][2] = "|O|"
+  m[6][6] = "|O|"
+  m[3][2] = "|O|"
+
+  m[1][0] = "|X|"
+  m[2][0] = "|O|"
+  m[3][0] = "|O|"
+  m[5][6] = "|O|"
+  m[4][6] = "|O|"
+  m[6][4] = "|O|"
+  m[1][5] = "|O|"
+  m[2][4] = "|X|"
 end
 
-def tablero(m)	
-	for i in 0..7
-		a = [] 
-		for j in 0..7
-			a << "| |"
-		end
-		m << a
-	end
-	m[3][3] = "|O|"
-	m[3][4] = "|X|"	
-	m[4][3] = "|X|"
-	m[4][4] = "|O|"
-	m[4][5] = "|O|"
-	m[5][5] = "|X|"
-	m[5][2] = "|O|"
-	m[6][6] = "|O|"
-	m[3][2] = "|O|"
-	
-	m[1][0] = "|X|"
-	m[2][0] = "|O|"
-	m[3][0] = "|O|"
-	m[5][6] = "|O|"
-	m[4][6] = "|O|"
-	m[6][4] = "|O|"
-	m[1][5] = "|O|"
-	m[2][4] = "|X|"
-
-
-	
-end
-#Imprime la matriz
+#+Imprime la matriz
 def imprimir(m)
-	puts "======== REVERSI ========"
-	puts ""
-	puts "   0  1  2  3  4  5  6  7"
-	for i in 0..m.length - 1
-		print "#{i} "		
-		for j in 0..m.length - 1
-			print m[i][j]			
-		end
-		puts
-	end	
-	return m
+  puts "======== REVERSI ========"
+  puts ""
+  puts "   0  1  2  3  4  5  6  7"
+  for i in 0..m.length - 1
+    print "#{i} "
+    for j in 0..m.length - 1
+      print m[i][j]
+    end
+    puts
+  end
+  return m
 end
 
-#Lleva el conteo de las fichas
+#+Lleva el conteo de las fichas
 def contador(m,puntos)
-	sum_X = 0
-	sum_0 = 0
-	for i in 0..m.length - 1
-		for j in 0..m.length - 1
-			if m[i][j] == "|O|"
-				sum_0 += 1
-			elsif m[i][j] == "|X|"
-				sum_X += 1
-			end
-		end			
-	end
-	puntos << sum_0
-	puntos << sum_X
-	
-	return puntos
+  sum_X = 0
+  sum_0 = 0
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      if m[i][j] == "|O|"
+        sum_0 += 1
+      elsif m[i][j] == "|X|"
+        sum_X += 1
+      end
+    end
+  end
+  puntos << sum_0
+  puntos << sum_X
+
+  return puntos
 end
 
-#Miscelaneo de impresion de pantalla
+#+Miscelaneo de impresion de pantalla
 def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
-	imprimir(matriz)
-	puts
-	contador(matriz,puntos)
-	puts "#{jugador_1} | Puntos --> #{puntos[0]}"
-	puts "#{jugador_2} | Puntos --> #{puntos[1]}"
-	puts "Numero de turnos = #{turnos}"
-	puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
+  imprimir(matriz)
+  puts
+  contador(matriz,puntos)
+  puts "#{jugador_1} | Puntos --> #{puntos[0]}"
+  puts "#{jugador_2} | Puntos --> #{puntos[1]}"
+  puts "Numero de turnos = #{turnos}"
+  puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
 end
 
-#Revisión de hacia abajo
+#+Revisión de hacia abajo
 def validacion_abajo(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[j][i] == "|X|"				
-				while m[j + 1][i] == "|O|" 
-					j += 1
-					if m[j + 1][i] == "| |" 
-						a << j + 1 
-						a << i
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[j][i] == "|X|"
+        while m[j + 1][i] == "|O|"
+          j += 1
+          if m[j + 1][i] == "| |"
+            a << j + 1
+            a << i
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de hacia arriba
+#+Revisión de hacia arriba
 def validacion_arriba(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = []
-			if m[j][i] == "|X|"				
-				while m[j - 1][i] == "|O|" 
-					j -= 1
-					
-					if m[j - 1][i] == "| |"
-						a << j - 1 
-						a << i
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[j][i] == "|X|"
+        while m[j - 1][i] == "|O|"
+          j -= 1
+
+          if m[j - 1][i] == "| |"
+            a << j - 1
+            a << i
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de hacia derecha
+#+Revisión de hacia derecha
 def validacion_derecha(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[i][j] == "|X|"				
-				while m[i][j + 1] == "|O|" 
-					j += 1
-					if m[i][j + 1] == "| |" 
-						a << i 
-						a << j + 1
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[i][j] == "|X|"
+        while m[i][j + 1] == "|O|"
+          j += 1
+          if m[i][j + 1] == "| |"
+            a << i
+            a << j + 1
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de hacia izquierda
+#+Revisión de hacia izquierda
 def validacion_izquierda(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[i][j] == "|X|"				
-				while m[i][j - 1] == "|O|" 
-					j -= 1
-					if m[i][j - 1] == "| |" 
-						a << i 
-						a << j - 1
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[i][j] == "|X|"
+        while m[i][j - 1] == "|O|"
+          j -= 1
+          if m[i][j - 1] == "| |"
+            a << i
+            a << j - 1
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de derecha abajo (Diagonal)	
+#+Revisión de derecha abajo (Diagonal)
 def validacion_derecha_abajo(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[i][j] == "|X|"				
-				while m[i + 1][j + 1] == "|O|" 
-					j += 1
-					i += 1
-					if m[i + 1][j + 1] == "| |" 
-						a << i + 1
-						a << j + 1
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[i][j] == "|X|"
+        while m[i + 1][j + 1] == "|O|"
+          j += 1
+          i += 1
+          if m[i + 1][j + 1] == "| |"
+            a << i + 1
+            a << j + 1
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de derecha arriba (Diagonal)
+#+Revisión de derecha arriba (Diagonal)
 def validacion_derecha_arriba(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[i][j] == "|X|"				
-				while m[i - 1][j + 1] == "|O|" 
-					j += 1
-					i -= 1
-					if m[i - 1][j + 1] == "| |" 
-						a << i - 1
-						a << j + 1
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[i][j] == "|X|"
+        while m[i - 1][j + 1] == "|O|"
+          j += 1
+          i -= 1
+          if m[i - 1][j + 1] == "| |"
+            a << i - 1
+            a << j + 1
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de izquierda abajo (Diagonal)
+#+Revisión de izquierda abajo (Diagonal)
 def validacion_izquierda_abajo(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[i][j] == "|X|"				
-				while m[i + 1][j - 1] == "|O|" 
-					j -= 1
-					i += 1
-					if m[i + 1][j - 1] == "| |" 
-						a << i + 1
-						a << j - 1
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[i][j] == "|X|"
+        while m[i + 1][j - 1] == "|O|"
+          j -= 1
+          i += 1
+          if m[i + 1][j - 1] == "| |"
+            a << i + 1
+            a << j - 1
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
 end
 
-#Revisión de izquierda arriba (Diagonal)
+#+Revisión de izquierda arriba (Diagonal)
 def validacion_izquierda_arriba(m)
-	coor = []
-	for i in 0..m.length - 1			
-		for j in 0..m.length - 1
-			a = [] 
-			if m[i][j] == "|X|"				
-				while m[i - 1][j - 1] == "|O|" 
-					j -= 1
-					i -= 1
-					if m[i - 1][j - 1] == "| |" 
-						a << i - 1
-						a << j - 1
-						coor << a
-					end
-				end
-			end
-		end
-	end
-	return coor
+  coor = []
+  for i in 0..m.length - 1
+    for j in 0..m.length - 1
+      a = []
+      if m[i][j] == "|X|"
+        while m[i - 1][j - 1] == "|O|"
+          j -= 1
+          i -= 1
+          if m[i - 1][j - 1] == "| |"
+            a << i - 1
+            a << j - 1
+            coor << a
+          end
+        end
+      end
+    end
+  end
+  return coor
+end
+
+#*Sumatoria de jugadas Validas
+def sumar_validas(matriz,validas)
+
+  abajo = validacion_abajo(matriz)
+  arriba = validacion_arriba(matriz)
+  derecha = validacion_derecha(matriz)
+  izquierda = validacion_izquierda(matriz)
+  dere_abajo = validacion_derecha_abajo(matriz)
+  dere_arriba = validacion_derecha_arriba(matriz)
+  izq_abajo = validacion_izquierda_abajo(matriz)
+  izq_arriba = validacion_izquierda_arriba(matriz)
+
+  validas = (abajo + arriba + derecha + izquierda + dere_abajo + dere_arriba + izq_abajo + izq_arriba)
+
+  return validas
 end
 
 
-def jugadas_validas(jugador)
-	
-end
+def mover_ficha(m,validas)
+  flag = false
 
-def mover_ficha(validas)
-	flag = false
+  loop do
+    puts "Ingrese la fila"
+    fila = gets.chomp.to_i
+    puts "Ingrese la columna"
+    columna = gets.chomp.to_i
 
-	loop do
+    a = [fila,columna]
 
-	puts "Ingrese la fila"
-	fila = gets.chomp.to_i
-	puts "Ingrese la columna"
-	columna = gets.chomp.to_i
-	if columna < fila
-		flag = true
-	else
-		puts "JUGADA NO VALIDA"
-		puts
-	end
-	break if flag == true
-	end
+    for i in 0..validas.length - 1
+        if validas[i] == a
+          m[fila][columna] = "|X|" 
 
-
+          flag = true
+        end
+      break if  flag == true
+    end
+    puts "¡¡¡ Jugada no Valida, Intentelo de Nuevo !!!"
+    break if flag == true
+  end
 end
 
 def cambiar_fichas
-	
+
 end
 
 
 def main()
-	matriz = []
-	tablero(matriz)
-	player = []
-	puntos = []
-	turnos = 1
-	nombres(player)
-	jugador_1 = "Jugador 1 (X): #{player[0].capitalize}"
-	jugador_2 = "Jugador 2 (O): #{player[1].capitalize}"
-	
-	loop do
-		system("clear")
-		#validas = []
-		#coordenadas = []
-		pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
-		jugador_actual = turnos % 2 == 0 ? "|x|" : "|0|"
-		#validas = jugadas_validas(jugador_actual)
-		#if validas != []		
-			abajo = validacion_abajo(matriz)
-			puts "Bajo #{abajo}"
-			#arriba = validacion_arriba(matriz)
-			#puts "Arriba #{arriba}"
-			arriba = validacion_arriba(matriz)
-			puts "arriba #{arriba}"
+  matriz = []
+  tablero(matriz)
+  player = []
+  puntos = []
+  turnos = 1
+  nombres(player)
+  jugador_1 = "Jugador 1 (X): #{player[0].capitalize}"
+  jugador_2 = "Jugador 2 (O): #{player[1].capitalize}"
 
-			derecha = validacion_derecha(matriz)
-			puts "Derecha #{derecha}"	
-			#mover_ficha(validas)
+  loop do
+    system("clear")
+    validas = []
+    #coordenadas = []
+    pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
+    jugador_actual = turnos % 2 == 0 ? "|x|" : "|0|"
+    #validas = jugadas_validas(jugador_actual)
+    #if validas != []
+      abajo = validacion_abajo(matriz)
+      puts "Bajo #{abajo}"
 
-			izquierda = validacion_izquierda(matriz)
-			puts "izquieda #{izquierda}"
+      arriba = validacion_arriba(matriz)
+      puts "arriba #{arriba}"
 
-			dere_abajo = validacion_derecha_abajo(matriz)
-			puts "dere_abajo #{dere_abajo}"
+      derecha = validacion_derecha(matriz)
+      puts "Derecha #{derecha}"
 
-			dere_arriba = validacion_derecha_arriba(matriz)
-			puts "dere_arriba #{dere_arriba}"
+      izquierda = validacion_izquierda(matriz)
+      puts "izquieda #{izquierda}"
 
-			izq_abajo = validacion_izquierda_abajo(matriz)
-			puts "izq_abajo #{izq_abajo}"
+      dere_abajo = validacion_derecha_abajo(matriz)
+      puts "dere_abajo #{dere_abajo}"
 
-			izq_arriba = validacion_izquierda_arriba(matriz)
-			puts "izq_arriba #{izq_arriba}"
+      dere_arriba = validacion_derecha_arriba(matriz)
+      puts "dere_arriba #{dere_arriba}"
+
+      izq_abajo = validacion_izquierda_abajo(matriz)
+      puts "izq_abajo #{izq_abajo}"
+
+      izq_arriba = validacion_izquierda_arriba(matriz)
+      puts "izq_arriba #{izq_arriba}"
 
 
+        #sumatoria de matrices
+      print validas = sumar_validas(matriz,validas)
+      puts
+      mover_ficha(matriz, validas)
 
-			#if coordenadas == jugadasvalidas
-				#cambiar_fichas
-			#else
-				#ralizar una _jugada_valida
-			#end
-		#elsif jugas_validas_proximo == []  
-			#puts "fin del juego"
-		#end
+      #if coordenadas == jugadasvalidas
+        #cambiar_fichas
+      #else
+        #ralizar una _jugada_valida
+      #end
+    #elsif jugas_validas_proximo == []
+      #puts "fin del juego"
+    #end
 
-		
-		turnos += 1
-		  
-		gets
 
-	end
+    turnos += 1
+
+    gets
+
+  end
 end
 
 main()
