@@ -71,7 +71,7 @@ def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
 	puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
 end
 
-#lito
+#READY
 def validacion_abajo(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -92,7 +92,7 @@ def validacion_abajo(m)
 	return coor
 end
 
-#listo
+#READY
 def validacion_arriba(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -114,7 +114,7 @@ def validacion_arriba(m)
 	return coor
 end
 
-#listo
+#READY
 def validacion_derecha(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -135,7 +135,7 @@ def validacion_derecha(m)
 	return coor
 end
 
-
+#READY
 def validacion_izquierda(m)
 	coor = []
 	for i in 0..m.length - 1			
@@ -156,7 +156,27 @@ def validacion_izquierda(m)
 	return coor
 end
 
-
+#READY
+def validacion_derecha_abajo(m)
+	coor = []
+	for i in 0..m.length - 1			
+		for j in 0..m.length - 1
+			a = [] 
+			if m[i][j] == "|X|"				
+				while m[i + 1][j + 1] == "|O|" 
+					j += 1
+					i += 1
+					if m[i + 1][j + 1] == "| |" 
+						a << i + 1
+						a << j + 1
+						coor << a
+					end
+				end
+			end
+		end
+	end
+	return coor
+end
 
 
 
@@ -222,8 +242,8 @@ def main()
 			izquierda = validacion_izquierda(matriz)
 			puts "izquieda #{izquierda}"
 
-
-
+			dere_abajo = validacion_derecha_abajo(matriz)
+			puts "dere_abajo #{dere_abajo}"
 			#if coordenadas == jugadasvalidas
 				#cambiar_fichas
 			#else
