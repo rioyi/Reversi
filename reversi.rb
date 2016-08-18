@@ -333,31 +333,7 @@ def main()
     jugador_actual = turnos % 2 == 0 ? "|O|" : "|X|"
     #validas = jugadas_validas(jugador_actual)
     #if validas != []
-      abajo = validacion_abajo(matriz,jugador_actual)
-      puts "Bajo #{abajo}"
-
-      arriba = validacion_arriba(matriz,jugador_actual)
-      puts "arriba #{arriba}"
-
-      derecha = validacion_derecha(matriz,jugador_actual)
-      puts "Derecha #{derecha}"
-
-      izquierda = validacion_izquierda(matriz,jugador_actual)
-      puts "izquieda #{izquierda}"
-
-      dere_abajo = validacion_derecha_abajo(matriz,jugador_actual)
-      puts "dere_abajo #{dere_abajo}"
-
-      dere_arriba = validacion_derecha_arriba(matriz,jugador_actual)
-      puts "dere_arriba #{dere_arriba}"
-
-      izq_abajo = validacion_izquierda_abajo(matriz,jugador_actual)
-      puts "izq_abajo #{izq_abajo}"
-
-      izq_arriba = validacion_izquierda_arriba(matriz, jugador_actual)
-      puts "izq_arriba #{izq_arriba}"
-
-
+    
         #sumatoria de matrices
       validas = sumar_validas(matriz,validas,jugador_actual)
       puts
