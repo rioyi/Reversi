@@ -1,3 +1,5 @@
+require 'colorize'
+
 #+Reversi
 def nombres(player)
   for i in 0..1
@@ -12,14 +14,14 @@ def tablero(m)
   for i in 0..7
     a = []
     for j in 0..7
-      a << "| |"
+      a << "| |".green
     end
     m << a
   end
-  m[3][3] = "|O|"
-  m[3][4] = "|X|"
-  m[4][3] = "|X|"
-  m[4][4] = "|O|"
+  m[3][3] = "|O|".red
+  m[3][4] = "|X|".blue
+  m[4][3] = "|X|".blue
+  m[4][4] = "|O|".red
 
   
 
@@ -27,9 +29,10 @@ def tablero(m)
 
 #+Imprime la matriz
 def imprimir(m)
-  puts "======== REVERSI ========"
+  puts "===============================".red
+  puts "=========== REVERSI ===========".red
   puts ""
-  puts "   0  1  2  3  4  5  6  7"
+  puts "   0  1  2  3  4  5  6  7".yellow
   for i in 0..m.length - 1
     print "#{i} "
     for j in 0..m.length - 1
@@ -41,14 +44,15 @@ def imprimir(m)
 end
 
 #+Lleva el conteo de las fichas
-def contador(m,puntos)
+def contador(m)
+  puntos = []
   sum_X = 0
   sum_0 = 0
   for i in 0..m.length - 1
     for j in 0..m.length - 1
-      if m[i][j] == "|O|"
+      if m[i][j] == "|O|".red
         sum_0 += 1
-      elsif m[i][j] == "|X|"
+      elsif m[i][j] == "|X|".blue
         sum_X += 1
       end
     end
@@ -60,20 +64,22 @@ def contador(m,puntos)
 end
 
 #+Miscelaneo de impresion de pantalla
-def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
+def pantalla(matriz,jugador_1,jugador_2,player,turnos)
   imprimir(matriz)
   puts
-  contador(matriz,puntos)
-  puts "#{jugador_1} | Puntos --> #{puntos[1]}"
-  puts "#{jugador_2} | Puntos --> #{puntos[0]}"
+  puts "===============================".blue
+  puts "===============================".blue
+  puntos = contador(matriz)
+  puts "#{jugador_1} | Puntos --> #{puntos[1]}".blue
+  puts "#{jugador_2} | Puntos --> #{puntos[0]}".red
   puts "Numero de turnos = #{turnos}"
-  puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
+  puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}".red : "Turno de #{player[0].capitalize}".blue
 end
 
 #+Revisión de hacia abajo --
 def validacion_abajo(m,jugador_actual)
   coor = []  
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -82,7 +88,7 @@ def validacion_abajo(m,jugador_actual)
         while j + 2 < 8 && m[j + 1][i] == oponente  
           #break if j > 7 
           j += 1
-          if m[j + 1][i] == "| |"  
+          if m[j + 1][i] == "| |".green  
             a << j + 1
             a << i
             coor << a
@@ -97,14 +103,14 @@ end
 #+Revisión de hacia arriba --
 def validacion_arriba(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[j][i] == jugador_actual
-        while j - 2 > 0 && m[j - 1][i] == oponente
+        while j - 2 >= 0 && m[j - 1][i] == oponente
           j -= 1          
-          if m[j - 1][i] == "| |" && j > 0 #condicion unica
+          if m[j - 1][i] == "| |".green #&& j >= 0 #condicion unica
             a << j - 1
             a << i
             coor << a
@@ -119,14 +125,14 @@ end
 #+Revisión de hacia derecha
 def validacion_derecha(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
         while j + 2 < 8 && m[i][j + 1] == oponente
           j += 1
-          if m[i][j + 1] == "| |"
+          if m[i][j + 1] == "| |".green
             a << i
             a << j + 1
             coor << a
@@ -141,14 +147,14 @@ end
 #+Revisión de hacia izquierda
 def validacion_izquierda(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
-        while m[i][j - 1] == oponente
+        while j - 2 >= 0 && m[i][j - 1] == oponente
           j -= 1
-          if m[i][j - 1] == "| |" && j > 0
+          if m[i][j - 1] == "| |".green #&& j > 0
             a << i
             a << j - 1
             coor << a
@@ -163,7 +169,7 @@ end
 #+Revisión de derecha abajo (Diagonal)
 def validacion_derecha_abajo(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -171,7 +177,7 @@ def validacion_derecha_abajo(m,jugador_actual)
         while i + 2 < 8 && j + 2 < 8 && m[i + 1][j + 1] == oponente
           j += 1
           i += 1
-          if m[i + 1][j + 1] == "| |" && m[i + 1][j + 1] != nil 
+          if m[i + 1][j + 1] == "| |".green #&& m[i + 1][j + 1] != nil 
             a << i + 1
             a << j + 1
             coor << a
@@ -186,15 +192,15 @@ end
 #+Revisión de derecha arriba (Diagonal)
 def validacion_derecha_arriba(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
-        while m[i - 1][j + 1] == oponente
+        while i - 2 >= 0 && j + 2 < 8 && m[i - 1][j + 1] == oponente
           j += 1
           i -= 1
-          if m[i - 1][j + 1] == "| |" && m[i-1][j+1] != nil && i > 0
+          if m[i - 1][j + 1] == "| |".green #&& m[i-1][j+1] != nil && i > 0
             a << i - 1
             a << j + 1
             coor << a
@@ -209,15 +215,15 @@ end
 #+Revisión de izquierda abajo (Diagonal)
 def validacion_izquierda_abajo(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual 
-        while m[i + 1][j - 1] == oponente && m[i+2][j-2] != nil
+        while i + 2 < 8 && j - 2 >= 0 && m[i + 1][j - 1] == oponente
           j -= 1
           i += 1          
-          if m[i + 1][j - 1] == "| |"
+          if m[i + 1][j - 1] == "| |".green
             a << i + 1
             a << j - 1
             coor << a
@@ -232,15 +238,15 @@ end
 #+Revisión de izquierda arriba (Diagonal)
 def validacion_izquierda_arriba(m,jugador_actual)
   coor = []
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
-        while i - 2 < 8 && j - 2 < 8 && m[i - 1][j - 1] == oponente
+        while i - 2 >= 0 && j - 2 >= 0 && m[i - 1][j - 1] == oponente
           j -= 1
           i -= 1
-          if m[i - 1][j - 1] == "| |" && j > 0
+          if m[i - 1][j - 1] == "| |".green #&& j > 0
             a << i - 1
             a << j - 1
             coor << a
@@ -253,7 +259,8 @@ def validacion_izquierda_arriba(m,jugador_actual)
 end
 
 #*Sumatoria de jugadas Validas
-def sumar_validas(matriz,validas,jugador_actual)
+def sumar_validas(matriz,jugador_actual)
+  validas = []
 
   abajo = validacion_abajo(matriz,jugador_actual)
   arriba = validacion_arriba(matriz,jugador_actual)
@@ -289,7 +296,7 @@ def mover_ficha(m,validas,jugador_actual)
       break if  flag == true
     end
     if flag == false
-    puts "¡¡¡ Jugada no permitida, Intentelo de Nuevo !!!"
+    puts "¡¡¡ Jugada no permitida, Intentelo de Nuevo !!!".red
     puts
     end
     break if flag == true
@@ -299,188 +306,176 @@ def mover_ficha(m,validas,jugador_actual)
 end
 
 def cambiar_ficha(m,jugada,jugador_actual)
-  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|".blue ? "|O|".red : "|X|".blue
   
   i = jugada[0]
   j = jugada[1]
-  puts m[i][j]
-  puts "actual #{jugador_actual}"
-  puts "oponente #{oponente}"
   
+  #abajo
+  flag = false
+  while i + 2 < 8 && m[i + 1][j] == oponente
+      i += 1
+    if m[i + 1][j] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      i += 1              
+      m[i][j] = jugador_actual          
+      break if m[i + 1][j] == jugador_actual             
+  end 
 
-  #if m[jugada[0]][jugada[1]] == jugador_actual    
-  #end
-  #for i in 0..m.length - 1
-    #for j in 0..m.length - 1
-      #a = []
-      #cambio  abajo
-        flag = false
-        while i + 2 < 8 && m[i + 1][j] == oponente
-            i += 1
-          if m[i + 1][j] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            i += 1              
-            m[i][j] = jugador_actual          
-            break if m[i + 1][j] == jugador_actual             
-        end 
+  #arriba
+  i = jugada[0]
+  j = jugada[1]
 
-        #arriba
-        i = jugada[0]
-        j = jugada[1]
+   flag = false
+  while i - 2 >= 0 && m[i - 1][j] == oponente
+      i -= 1
+    if m[i - 1][j] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      i -= 1              
+      m[i][j] = jugador_actual          
+      break if m[i - 1][j] == jugador_actual             
+  end
 
-         flag = false
-        while i - 2 > 0 && m[i - 1][j] == oponente
-            i -= 1
-          if m[i - 1][j] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            i -= 1              
-            m[i][j] = jugador_actual          
-            break if m[i - 1][j] == jugador_actual             
-        end
+  #derecha
+  i = jugada[0]
+  j = jugada[1]
 
-        #derecha
-        i = jugada[0]
-        j = jugada[1]
-
-         flag = false
-        while j + 2 < 8 && m[i][j + 1] == oponente
-            i += 1
-          if m[i][j + 1] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            j += 1              
-            m[i][j] = jugador_actual          
-            break if m[i][j + 1] == jugador_actual             
-        end 
+  flag = false
+  while j + 2 < 8 && m[i][j + 1] == oponente
+    j += 1
+    if m[i][j + 1] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      j += 1              
+      m[i][j] = jugador_actual          
+      break if m[i][j + 1] == jugador_actual             
+  end 
 
 
-        #izquierda
-        i = jugada[0]
-        j = jugada[1]
+  #izquierda
+  i = jugada[0]
+  j = jugada[1]
 
-         flag = false
-        while j - 2 < 8 && m[i][j - 1] == oponente
-            i -= 1
-          if m[i][j - 1] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            j -= 1              
-            m[i][j] = jugador_actual          
-            break if m[i][j - 1] == jugador_actual             
-        end
+  flag = false
+  while j - 2 < 8 && m[i][j - 1] == oponente
+      j -= 1
+    if m[i][j - 1] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      j -= 1              
+      m[i][j] = jugador_actual          
+      break if m[i][j - 1] == jugador_actual             
+  end
 
-        #derecha abajo
-        i = jugada[0]
-        j = jugada[1]
+  #derecha abajo
+  i = jugada[0]
+  j = jugada[1]
 
-         flag = false
-        while i + 2 < 8 && j + 2 < 8 && m[i + 1][j + 1] == oponente
-            i += 1
-            j += 1
-          if m[i + 1][j + 1] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            i += 1
-            j += 1              
-            m[i][j] = jugador_actual          
-            break if m[i + 1][j + 1] == jugador_actual             
-        end
+   flag = false
+  while i + 2 < 8 && j + 2 < 8 && m[i + 1][j + 1] == oponente
+      i += 1
+      j += 1
+    if m[i + 1][j + 1] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      i += 1
+      j += 1              
+      m[i][j] = jugador_actual          
+      break if m[i + 1][j + 1] == jugador_actual             
+  end
 
-        #derecha arriba ******
-        i = jugada[0]
-        j = jugada[1]
+  #derecha arriba ******
+  i = jugada[0]
+  j = jugada[1]
 
-         flag = false
-        while m[i - 1][j + 1] == oponente
-            i -= 1
-            j += 1
-          if m[i - 1][j + 1] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            i -= 1
-            j += 1              
-            m[i][j] = jugador_actual          
-            break if m[i + 1][j - 1] == jugador_actual             
-        end
+   flag = false
+  while i - 2 >= 0 && j + 2 < 8 && m[i - 1][j + 1] == oponente
+      i -= 1
+      j += 1
+    if m[i - 1][j + 1] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      i -= 1
+      j += 1              
+      m[i][j] = jugador_actual          
+      break if m[i - 1][j + 1] == jugador_actual             
+  end
 
-        #izq abajo 
-        i = jugada[0]
-        j = jugada[1]
+  #izq abajo 
+  i = jugada[0]
+  j = jugada[1]
 
-         flag = false
-        while m[i + 1][j - 1] == oponente
-            i += 1
-            j -= 1
-          if m[i + 1][j - 1] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            i += 1
-            j -= 1              
-            m[i][j] = jugador_actual          
-            break if m[i + 1][j - 1] == jugador_actual             
-        end
+   flag = false
+  while i + 2 < 8 && j - 2 >= 0 && m[i + 1][j - 1] == oponente
+      i += 1
+      j -= 1
+    if m[i + 1][j - 1] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      i += 1
+      j -= 1              
+      m[i][j] = jugador_actual          
+      break if m[i + 1][j - 1] == jugador_actual             
+  end
 
-        #izq arriba 
-        i = jugada[0]
-        j = jugada[1]
+  #izq arriba 
+  i = jugada[0]
+  j = jugada[1]
 
-         flag = false
-        while m[i - 1][j - 1] == oponente
-            i -= 1
-            j -= 1
-          if m[i - 1][j - 1] == jugador_actual
-            flag = true
-          end
-          break if flag == true
-        end
-        i = jugada[0]
-        j = jugada[1]
-        while flag == true
-            i -= 1
-            j -= 1              
-            m[i][j] = jugador_actual          
-            break if m[i - 1][j - 1] == jugador_actual             
-        end
-
-
-
+   flag = false
+  while i - 2 >= 0 && j - 2 >= 0 && m[i - 1][j - 1] == oponente
+      i -= 1
+      j -= 1
+    if m[i - 1][j - 1] == jugador_actual
+      flag = true
+    end
+    break if flag == true
+  end
+  i = jugada[0]
+  j = jugada[1]
+  while flag == true
+      i -= 1
+      j -= 1              
+      m[i][j] = jugador_actual          
+      break if m[i - 1][j - 1] == jugador_actual             
+  end
 end
 
 
@@ -488,7 +483,7 @@ def main()
   matriz = []
   tablero(matriz)
   player = []
-  puntos = []
+  #puntos = []
   turnos = 1
   nombres(player)
   jugador_1 = "Jugador 1 (X): #{player[0].capitalize}"
@@ -496,33 +491,21 @@ def main()
 
   loop do
     system("clear")
-    validas = []
-    #coordenadas = []
-    pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
-    jugador_actual = turnos % 2 == 0 ? "|O|" : "|X|"
-    #validas = jugadas_validas(jugador_actual)
-    #if validas != []
+
+    pantalla(matriz,jugador_1,jugador_2,player,turnos)
+    jugador_actual = turnos % 2 == 0 ? "|O|".red : "|X|".blue    
+    jugador_proximo = turnos % 2 == 0 ? "|X|".blue : "|O|".red
     
-    print sumar_validas(matriz,validas,jugador_actual)
-     validas = sumar_validas(matriz,validas,jugador_actual)
-    puts
-    a = mover_ficha(matriz, validas, jugador_actual)
-    cambiar_ficha(matriz, a, jugador_actual)
-    gets
-      #if coordenadas == jugadasvalidas
-        #cambiar_fichas
-      #else
-        #ralizar una _jugada_valida
-      #end
-    #elsif jugas_validas_proximo == []
-      #puts "fin del juego"
-    #end
-
-
+    validas = sumar_validas(matriz,jugador_actual)
+    validas_proximo = sumar_validas(matriz,jugador_proximo)    
+    if validas != []
+      a = mover_ficha(matriz, validas, jugador_actual)
+      cambiar_ficha(matriz, a, jugador_actual)      
+    elsif validas_proximo == []
+      puts "fin del juego"
+      break
+    end
     turnos += 1
-
-    #gets
-
   end
 end
 
