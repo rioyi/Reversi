@@ -23,8 +23,8 @@ def tablero(m)
   m[4][5] = "|O|"
   m[5][5] = "|X|"
   m[5][2] = "|O|"
-  m[6][6] = "|O|"
-  m[3][2] = "|O|"
+  m[6][1] = "|X|"
+  m[7][1] = "|O|"
 
   m[1][0] = "|X|"
   m[2][0] = "|O|"
@@ -33,8 +33,13 @@ def tablero(m)
   m[4][6] = "|O|"
   m[6][4] = "|O|"
   m[1][5] = "|O|"
-  m[2][4] = "|X|"
-end
+  m[2][6] = "|X|"
+  m[2][7] = "|O|"
+
+  m[1][2] = "|X|"
+  m[0][2] = "|O|"
+  m[3][1] = "|X|"
+ end
 
 #+Imprime la matriz
 def imprimir(m)
@@ -75,23 +80,25 @@ def pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
   imprimir(matriz)
   puts
   contador(matriz,puntos)
-  puts "#{jugador_1} | Puntos --> #{puntos[0]}"
-  puts "#{jugador_2} | Puntos --> #{puntos[1]}"
+  puts "#{jugador_1} | Puntos --> #{puntos[1]}"
+  puts "#{jugador_2} | Puntos --> #{puntos[0]}"
   puts "Numero de turnos = #{turnos}"
   puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}" : "Turno de #{player[0].capitalize}"
 end
 
-#+Revisión de hacia abajo
+#+Revisión de hacia abajo --
 def validacion_abajo(m,jugador_actual)
   coor = []  
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[j][i] == jugador_actual
-        while m[j + 1][i] == oponente
+        # j + 2 < 8 condicion unica
+        while j + 2 < 8 && m[j + 1][i] == oponente  
+          #break if j > 7 
           j += 1
-          if m[j + 1][i] == "| |"
+          if m[j + 1][i] == "| |"  
             a << j + 1
             a << i
             coor << a
@@ -103,18 +110,17 @@ def validacion_abajo(m,jugador_actual)
   return coor
 end
 
-#+Revisión de hacia arriba
+#+Revisión de hacia arriba --
 def validacion_arriba(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[j][i] == jugador_actual
         while m[j - 1][i] == oponente
-          j -= 1
-
-          if m[j - 1][i] == "| |"
+          j -= 1          
+          if m[j - 1][i] == "| |" && j > 0 #condicion unica
             a << j - 1
             a << i
             coor << a
@@ -129,7 +135,7 @@ end
 #+Revisión de hacia derecha
 def validacion_derecha(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -151,14 +157,14 @@ end
 #+Revisión de hacia izquierda
 def validacion_izquierda(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
         while m[i][j - 1] == oponente
           j -= 1
-          if m[i][j - 1] == "| |"
+          if m[i][j - 1] == "| |" && j > 0
             a << i
             a << j - 1
             coor << a
@@ -173,7 +179,7 @@ end
 #+Revisión de derecha abajo (Diagonal)
 def validacion_derecha_abajo(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -196,7 +202,7 @@ end
 #+Revisión de derecha arriba (Diagonal)
 def validacion_derecha_arriba(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -219,7 +225,7 @@ end
 #+Revisión de izquierda abajo (Diagonal)
 def validacion_izquierda_abajo(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -227,7 +233,7 @@ def validacion_izquierda_abajo(m,jugador_actual)
         while m[i + 1][j - 1] == oponente
           j -= 1
           i += 1
-          if m[i + 1][j - 1] == "| |"
+          if m[i + 1][j - 1] == "| |" && j > 0
             a << i + 1
             a << j - 1
             coor << a
@@ -242,7 +248,7 @@ end
 #+Revisión de izquierda arriba (Diagonal)
 def validacion_izquierda_arriba(m,jugador_actual)
   coor = []
-  puts oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
@@ -250,7 +256,7 @@ def validacion_izquierda_arriba(m,jugador_actual)
         while m[i - 1][j - 1] == oponente
           j -= 1
           i -= 1
-          if m[i - 1][j - 1] == "| |"
+          if m[i - 1][j - 1] == "| |" && j > 0
             a << i - 1
             a << j - 1
             coor << a
@@ -324,36 +330,36 @@ def main()
     validas = []
     #coordenadas = []
     pantalla(matriz,puntos,jugador_1,jugador_2,player,turnos)
-    puts jugador_actual = turnos % 2 == 0 ? "|O|" : "|X|"
+    jugador_actual = turnos % 2 == 0 ? "|O|" : "|X|"
     #validas = jugadas_validas(jugador_actual)
     #if validas != []
-      #abajo = validacion_abajo(matriz,jugador_actual)
-      #puts "Bajo #{abajo}"
+      abajo = validacion_abajo(matriz,jugador_actual)
+      puts "Bajo #{abajo}"
 
-      #arriba = validacion_arriba(matriz)
-      #puts "arriba #{arriba}"
+      arriba = validacion_arriba(matriz,jugador_actual)
+      puts "arriba #{arriba}"
 
-      #derecha = validacion_derecha(matriz)
-      #puts "Derecha #{derecha}"
+      derecha = validacion_derecha(matriz,jugador_actual)
+      puts "Derecha #{derecha}"
 
-      #izquierda = validacion_izquierda(matriz)
-      #puts "izquieda #{izquierda}"
+      izquierda = validacion_izquierda(matriz,jugador_actual)
+      puts "izquieda #{izquierda}"
 
-      #dere_abajo = validacion_derecha_abajo(matriz)
-      #puts "dere_abajo #{dere_abajo}"
+      dere_abajo = validacion_derecha_abajo(matriz,jugador_actual)
+      puts "dere_abajo #{dere_abajo}"
 
-      #dere_arriba = validacion_derecha_arriba(matriz)
-      #puts "dere_arriba #{dere_arriba}"
+      dere_arriba = validacion_derecha_arriba(matriz,jugador_actual)
+      puts "dere_arriba #{dere_arriba}"
 
-      #izq_abajo = validacion_izquierda_abajo(matriz)
-      #puts "izq_abajo #{izq_abajo}"
+      izq_abajo = validacion_izquierda_abajo(matriz,jugador_actual)
+      puts "izq_abajo #{izq_abajo}"
 
-      #izq_arriba = validacion_izquierda_arriba(matriz)
-      #puts "izq_arriba #{izq_arriba}"
+      izq_arriba = validacion_izquierda_arriba(matriz, jugador_actual)
+      puts "izq_arriba #{izq_arriba}"
 
 
         #sumatoria de matrices
-      print validas = sumar_validas(matriz,validas,jugador_actual)
+      validas = sumar_validas(matriz,validas,jugador_actual)
       puts
       mover_ficha(matriz, validas, jugador_actual)
 
