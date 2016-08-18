@@ -21,6 +21,8 @@ def tablero(m)
   m[4][3] = "|X|"
   m[4][4] = "|O|"
 
+  
+
  end
 
 #+Imprime la matriz
@@ -100,7 +102,7 @@ def validacion_arriba(m,jugador_actual)
     for j in 0..m.length - 1
       a = []
       if m[j][i] == jugador_actual
-        while m[j - 1][i] == oponente
+        while j - 2 > 0 && m[j - 1][i] == oponente
           j -= 1          
           if m[j - 1][i] == "| |" && j > 0 #condicion unica
             a << j - 1
@@ -122,7 +124,7 @@ def validacion_derecha(m,jugador_actual)
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
-        while m[i][j + 1] == oponente
+        while j + 2 < 8 && m[i][j + 1] == oponente
           j += 1
           if m[i][j + 1] == "| |"
             a << i
@@ -166,10 +168,10 @@ def validacion_derecha_abajo(m,jugador_actual)
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
-        while m[i + 1][j + 1] == oponente
+        while i + 2 < 8 && j + 2 < 8 && m[i + 1][j + 1] == oponente
           j += 1
           i += 1
-          if m[i + 1][j + 1] == "| |"
+          if m[i + 1][j + 1] == "| |" && m[i + 1][j + 1] != nil 
             a << i + 1
             a << j + 1
             coor << a
@@ -192,7 +194,7 @@ def validacion_derecha_arriba(m,jugador_actual)
         while m[i - 1][j + 1] == oponente
           j += 1
           i -= 1
-          if m[i - 1][j + 1] == "| |"
+          if m[i - 1][j + 1] == "| |" && m[i-1][j+1] != nil && i > 0
             a << i - 1
             a << j + 1
             coor << a
@@ -211,11 +213,11 @@ def validacion_izquierda_abajo(m,jugador_actual)
   for i in 0..m.length - 1
     for j in 0..m.length - 1
       a = []
-      if m[i][j] == jugador_actual
-        while m[i + 1][j - 1] == oponente
+      if m[i][j] == jugador_actual 
+        while m[i + 1][j - 1] == oponente && m[i+2][j-2] != nil
           j -= 1
-          i += 1
-          if m[i + 1][j - 1] == "| |" && j > 0
+          i += 1          
+          if m[i + 1][j - 1] == "| |"
             a << i + 1
             a << j - 1
             coor << a
@@ -235,7 +237,7 @@ def validacion_izquierda_arriba(m,jugador_actual)
     for j in 0..m.length - 1
       a = []
       if m[i][j] == jugador_actual
-        while m[i - 1][j - 1] == oponente
+        while i - 2 < 8 && j - 2 < 8 && m[i - 1][j - 1] == oponente
           j -= 1
           i -= 1
           if m[i - 1][j - 1] == "| |" && j > 0
@@ -302,50 +304,183 @@ def cambiar_ficha(m,jugada,jugador_actual)
   i = jugada[0]
   j = jugada[1]
   puts m[i][j]
-  puts m[i - 1][j]
+  puts "actual #{jugador_actual}"
+  puts "oponente #{oponente}"
+  
 
   #if m[jugada[0]][jugada[1]] == jugador_actual    
   #end
   #for i in 0..m.length - 1
     #for j in 0..m.length - 1
       #a = []
-      #cambio arriba 
-      if j + 1 < 8 && m[i + 1][j] == oponente
-        loop do
-          i += 1   
-          m[i][j] = jugador_actual          
-          break if m[j + 1][i] == "|X|"
+      #cambio  abajo
+        flag = false
+        while i + 2 < 8 && m[i + 1][j] == oponente
+            i += 1
+          if m[i + 1][j] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            i += 1              
+            m[i][j] = jugador_actual          
+            break if m[i + 1][j] == jugador_actual             
         end 
-      end
 
-      #cambio abajo
-      i = jugada[0]
-      j = jugada[1]
+        #arriba
+        i = jugada[0]
+        j = jugada[1]
 
-      if m[i - 1][j] == oponente
-        loop do
-          i -= 1   
-          m[i][j] = jugador_actual
-          
-          break if m[j + 1][i] == "|X|"
+         flag = false
+        while i - 2 > 0 && m[i - 1][j] == oponente
+            i -= 1
+          if m[i - 1][j] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            i -= 1              
+            m[i][j] = jugador_actual          
+            break if m[i - 1][j] == jugador_actual             
+        end
+
+        #derecha
+        i = jugada[0]
+        j = jugada[1]
+
+         flag = false
+        while j + 2 < 8 && m[i][j + 1] == oponente
+            i += 1
+          if m[i][j + 1] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            j += 1              
+            m[i][j] = jugador_actual          
+            break if m[i][j + 1] == jugador_actual             
         end 
-      end
 
-      i = jugada[0]
-      j = jugada[1]
 
-      if m[i - 1][j] == oponente
-        loop do
-          i -= 1   
-          m[i][j] = jugador_actual
-          
-          break if m[j + 1][i] == "|X|"
-        end 
-      end
-    #end
-  #end
+        #izquierda
+        i = jugada[0]
+        j = jugada[1]
 
-  
+         flag = false
+        while j - 2 < 8 && m[i][j - 1] == oponente
+            i -= 1
+          if m[i][j - 1] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            j -= 1              
+            m[i][j] = jugador_actual          
+            break if m[i][j - 1] == jugador_actual             
+        end
+
+        #derecha abajo
+        i = jugada[0]
+        j = jugada[1]
+
+         flag = false
+        while i + 2 < 8 && j + 2 < 8 && m[i + 1][j + 1] == oponente
+            i += 1
+            j += 1
+          if m[i + 1][j + 1] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            i += 1
+            j += 1              
+            m[i][j] = jugador_actual          
+            break if m[i + 1][j + 1] == jugador_actual             
+        end
+
+        #derecha arriba ******
+        i = jugada[0]
+        j = jugada[1]
+
+         flag = false
+        while m[i - 1][j + 1] == oponente
+            i -= 1
+            j += 1
+          if m[i - 1][j + 1] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            i -= 1
+            j += 1              
+            m[i][j] = jugador_actual          
+            break if m[i + 1][j - 1] == jugador_actual             
+        end
+
+        #izq abajo 
+        i = jugada[0]
+        j = jugada[1]
+
+         flag = false
+        while m[i + 1][j - 1] == oponente
+            i += 1
+            j -= 1
+          if m[i + 1][j - 1] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            i += 1
+            j -= 1              
+            m[i][j] = jugador_actual          
+            break if m[i + 1][j - 1] == jugador_actual             
+        end
+
+        #izq arriba 
+        i = jugada[0]
+        j = jugada[1]
+
+         flag = false
+        while m[i - 1][j - 1] == oponente
+            i -= 1
+            j -= 1
+          if m[i - 1][j - 1] == jugador_actual
+            flag = true
+          end
+          break if flag == true
+        end
+        i = jugada[0]
+        j = jugada[1]
+        while flag == true
+            i -= 1
+            j -= 1              
+            m[i][j] = jugador_actual          
+            break if m[i - 1][j - 1] == jugador_actual             
+        end
+
+
+
 end
 
 
@@ -368,7 +503,7 @@ def main()
     #validas = jugadas_validas(jugador_actual)
     #if validas != []
     
-        #sumatoria de matrices
+    print sumar_validas(matriz,validas,jugador_actual)
      validas = sumar_validas(matriz,validas,jugador_actual)
     puts
     a = mover_ficha(matriz, validas, jugador_actual)
