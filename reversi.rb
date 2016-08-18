@@ -20,25 +20,7 @@ def tablero(m)
   m[3][4] = "|X|"
   m[4][3] = "|X|"
   m[4][4] = "|O|"
-  m[4][5] = "|O|"
-  m[5][5] = "|X|"
-  m[5][2] = "|O|"
-  m[6][1] = "|X|"
-  m[7][1] = "|O|"
 
-  m[1][0] = "|X|"
-  m[2][0] = "|O|"
-  m[3][0] = "|O|"
-  m[5][6] = "|O|"
-  m[4][6] = "|O|"
-  m[6][4] = "|O|"
-  m[1][5] = "|O|"
-  m[2][6] = "|X|"
-  m[2][7] = "|O|"
-
-  m[1][2] = "|X|"
-  m[0][2] = "|O|"
-  m[3][1] = "|X|"
  end
 
 #+Imprime la matriz
@@ -288,6 +270,8 @@ end
 
 def mover_ficha(m,validas,jugador_actual)
   flag = false
+  fila = ""
+  columna = ""
 
   loop do
     puts "Ingrese la fila"
@@ -308,10 +292,60 @@ def mover_ficha(m,validas,jugador_actual)
     end
     break if flag == true
   end
+  jugadas = [fila,columna]
+  return jugadas
 end
 
-def cambiar_fichas
+def cambiar_ficha(m,jugada,jugador_actual)
+  oponente = jugador_actual == "|X|" ? "|O|" : "|X|"
+  
+  i = jugada[0]
+  j = jugada[1]
+  puts m[i][j]
+  puts m[i - 1][j]
 
+  #if m[jugada[0]][jugada[1]] == jugador_actual    
+  #end
+  #for i in 0..m.length - 1
+    #for j in 0..m.length - 1
+      #a = []
+      #cambio arriba 
+      if j + 1 < 8 && m[i + 1][j] == oponente
+        loop do
+          i += 1   
+          m[i][j] = jugador_actual          
+          break if m[j + 1][i] == "|X|"
+        end 
+      end
+
+      #cambio abajo
+      i = jugada[0]
+      j = jugada[1]
+
+      if m[i - 1][j] == oponente
+        loop do
+          i -= 1   
+          m[i][j] = jugador_actual
+          
+          break if m[j + 1][i] == "|X|"
+        end 
+      end
+
+      i = jugada[0]
+      j = jugada[1]
+
+      if m[i - 1][j] == oponente
+        loop do
+          i -= 1   
+          m[i][j] = jugador_actual
+          
+          break if m[j + 1][i] == "|X|"
+        end 
+      end
+    #end
+  #end
+
+  
 end
 
 
@@ -335,10 +369,11 @@ def main()
     #if validas != []
     
         #sumatoria de matrices
-      validas = sumar_validas(matriz,validas,jugador_actual)
-      puts
-      mover_ficha(matriz, validas, jugador_actual)
-
+     validas = sumar_validas(matriz,validas,jugador_actual)
+    puts
+    a = mover_ficha(matriz, validas, jugador_actual)
+    cambiar_ficha(matriz, a, jugador_actual)
+    gets
       #if coordenadas == jugadasvalidas
         #cambiar_fichas
       #else
