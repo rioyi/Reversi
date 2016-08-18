@@ -1,12 +1,20 @@
+#usamos la gema
 require 'colorize'
 
 #+Reversi
-def nombres(player)
-  for i in 0..1
-    puts "Ingrese el nombre del Jugador #{i + 1}"
-    jugador = gets.chomp
-    player << jugador
-  end
+def nombres(player, opcion)
+  if opcion == "1"
+    for i in 0..1
+      puts "Ingrese el nombre del Jugador #{i + 1}"
+      jugador = gets.chomp
+      player << jugador
+    end
+    elsif opcion == "2"     
+      puts "Ingrese el nombre del Jugador #{i}"
+      jugador = gets.chomp.capitalize
+      player << jugador
+    end
+
   return player
 end
 #+Construye el tablero
@@ -22,10 +30,7 @@ def tablero(m)
   m[3][4] = "|X|".blue
   m[4][3] = "|X|".blue
   m[4][4] = "|O|".red
-
-  
-
- end
+end
 
 #+Imprime la matriz
 def imprimir(m)
@@ -64,7 +69,7 @@ def contador(m)
 end
 
 #+Miscelaneo de impresion de pantalla
-def pantalla(matriz,jugador_1,jugador_2,player,turnos)
+def pantalla(matriz,jugador_1,jugador_2,player,turnos,opcion)
   imprimir(matriz)
   puts
   puts "===============================".blue
@@ -73,7 +78,11 @@ def pantalla(matriz,jugador_1,jugador_2,player,turnos)
   puts "#{jugador_1} | Puntos --> #{puntos[1]}".blue
   puts "#{jugador_2} | Puntos --> #{puntos[0]}".red
   puts "Numero de turnos = #{turnos}"
-  puts turnos % 2 == 0 ? "Turno de #{player[1].capitalize}".red : "Turno de #{player[0].capitalize}".blue
+  if opcion == "1"
+  puts turnos % 2 == 0 ? "Turno de #{player[1]}".red : "Turno de #{player[0]}".blue
+  else
+  puts turnos % 2 == 0 ? "Turno de PC".red : "Turno de #{player[0]}".blue
+  end
 end
 
 #+Revisión de hacia abajo --
@@ -277,30 +286,60 @@ def sumar_validas(matriz,jugador_actual)
 end
 
 
-def mover_ficha(m,validas,jugador_actual)
+def mover_ficha(m,validas,jugador_actual,opcion,turnos)
   flag = false
   fila = ""
   columna = ""
-
-  loop do
-    puts "Ingrese la fila"
-    fila = gets.chomp.to_i
-    puts "Ingrese la columna"
-    columna = gets.chomp.to_i
-    a = [fila,columna]
-    for i in 0..validas.length - 1
-        if validas[i] == a
-          m[fila][columna] = jugador_actual
-          flag = true
-        end
-      break if  flag == true
+  if opcion == "1"
+    loop do
+      puts "Ingrese la fila"
+      fila = gets.chomp.to_i
+      puts "Ingrese la columna"
+      columna = gets.chomp.to_i
+      a = [fila,columna]
+      for i in 0..validas.length - 1
+          if validas[i] == a
+            m[fila][columna] = jugador_actual
+            flag = true
+          end
+        break if  flag == true
+      end
+      if flag == false
+        puts "¡¡¡ Jugada no permitida, Intentelo de Nuevo !!!".red
+        puts
+      end
+      break if flag == true
     end
-    if flag == false
-    puts "¡¡¡ Jugada no permitida, Intentelo de Nuevo !!!".red
-    puts
-    end
-    break if flag == true
   end
+
+  if opcion == "2"
+    loop do
+      if turnos % 2 != 0       
+        puts "Ingrese la filaxxxx"
+        fila = gets.chomp.to_i
+        puts "Ingrese la columna"
+        columna = gets.chomp.to_i
+      elsif turnos % 2 == 0  
+        fila = rand(7)
+        columna = rand(7)
+      end
+      a = [fila,columna]
+      for i in 0..validas.length - 1
+          if validas[i] == a
+            m[fila][columna] = jugador_actual
+            flag = true
+          end
+        break if  flag == true
+      end
+      if flag == false
+        puts "¡¡¡ Jugada no permitida, Intentelo de Nuevo !!!".red
+        puts
+      end
+      break if flag == true
+    end
+  end  
+    
+ 
   jugadas = [fila,columna]
   return jugadas
 end
@@ -478,28 +517,59 @@ def cambiar_ficha(m,jugada,jugador_actual)
   end
 end
 
+def mostrar_menu
+  system("clear")
+  puts "===============================".red
+  puts "=========== REVERSI ===========".red
+  puts ""
+  puts "Opciones: --------------------".blue
+  puts
+  puts "1.- jugar con otro Humano".green
+  puts "2.- jugar con la computadora".green
+  puts "s.- Salir".red
+  puts
+  print "Opciones: -------------------".blue
+  puts
+  puts
+
+end
+
 
 def main()
   matriz = []
   tablero(matriz)
+  opcion = nil
+  flag = false
+    loop do
+      mostrar_menu()
+      opcion = gets.chomp.downcase
+      #puts opcion
+      break if opcion == "1" || opcion == "2" ||  opcion == "s"
+    end
+  return if opcion == "s"
   player = []
   #puntos = []
   turnos = 1
-  nombres(player)
-  jugador_1 = "Jugador 1 (X): #{player[0].capitalize}"
-  jugador_2 = "Jugador 2 (O): #{player[1].capitalize}"
-
+  nombres(player, opcion)
+  if opcion == "1"
+    jugador_1 = "Jugador 1 (X): #{player[0]}"
+    jugador_2 = "Jugador 2 (O): #{player[1]}"
+  else
+    jugador_1 = "Jugador 1 (X): #{player[0]}"
+    jugador_2 = "Jugador 2 (O): PC  "
+    
+  end
   loop do
     system("clear")
 
-    pantalla(matriz,jugador_1,jugador_2,player,turnos)
+    pantalla(matriz,jugador_1,jugador_2,player,turnos,opcion)
     jugador_actual = turnos % 2 == 0 ? "|O|".red : "|X|".blue    
     jugador_proximo = turnos % 2 == 0 ? "|X|".blue : "|O|".red
     
     validas = sumar_validas(matriz,jugador_actual)
     validas_proximo = sumar_validas(matriz,jugador_proximo)    
     if validas != []
-      a = mover_ficha(matriz, validas, jugador_actual)
+      a = mover_ficha(matriz, validas, jugador_actual,opcion,turnos)
       cambiar_ficha(matriz, a, jugador_actual)      
     elsif validas_proximo == []
       puts "fin del juego"
