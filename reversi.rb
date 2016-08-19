@@ -315,7 +315,7 @@ def mover_ficha(m,validas,jugador_actual,opcion,turnos)
   if opcion == "2"
     loop do
       if turnos % 2 != 0       
-        puts "Ingrese la filaxxxx"
+        puts "Ingrese la fila"
         fila = gets.chomp.to_i
         puts "Ingrese la columna"
         columna = gets.chomp.to_i
